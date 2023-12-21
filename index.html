@@ -10,22 +10,41 @@
             margin: 0;
             box-sizing: border-box;
             background-color: #000;
+            overflow: hidden; /* Prevent scrolling */
+            padding: 3px; /* 3px padding on all sides */
         }
 
         body {
             display: flex;
-            flex-wrap: wrap;
-            align-content: stretch;
-            justify-content: center;
             height: 100%;
+        }
+
+        #left-column {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #right-column {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+            justify-content: center;
+            align-items: center;
         }
 
         .video-container {
             position: relative;
             box-sizing: border-box;
-            width: calc(50% - 20px); /* 50% width with margin */
-            padding-bottom: 28.125%; /* 16:9 aspect ratio (adjust as needed) */
-            margin: 3px;
+            width: 100%;
+            padding-bottom: 50%; /* Adjusted aspect ratio for taller containers */
+            margin-bottom: 5px;
+            overflow: hidden;
         }
 
         .video-container iframe {
@@ -35,25 +54,89 @@
             width: 100%;
             height: 100%;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Arrange buttons in a row */
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .size-button {
+            cursor: pointer;
+            color: white;
+            padding: 10px;
+            margin-right: 5px;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .larger-video {
+            width: 100%;
+            height: 70vh; /* Adjusted height for the larger video */
+        }
+
+        @media only screen and (max-width: 1024px) {
+            .video-container {
+                width: 100%;
+                height: calc(100vw * 9 / 16);
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="video-container">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/avly0uwZzOE?si=zJFNaD6Q0JTJVr1H?autoplay=1&mute=1" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div id="left-column">
+    <div class="video-container larger-video" id="left-larger-video">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/avly0uwZzOE?si=zJFNaD6Q0JTJVr1H?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
+    <div class="button-container">
+        <div class="size-button" onclick="switchContent(0)">1</div>
+        <div class="size-button" onclick="switchContent(1)">2</div>
+        <div class="size-button" onclick="switchContent(2)">3</div>
+    </div>
 </div>
 
-<div class="video-container">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cb12KmMMDJA?si=nDkX8N1BNCEl24NQ?autoplay=1&mute=1" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div id="right-column">
+    <div class="video-container" id="right-stream-container1">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cb12KmMMDJA?si=nDkX8N1BNCEl24NQ?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-container" id="right-stream-container2">
+        <!-- Different content from the first container -->
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XKEBqDusJu0?si=PhtYALDhzdp5CMW-?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-container" id="right-stream-container3">
+        <!-- Different content from the first two containers -->
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/vfkUsBe_uBU?si=ZVCvJ8W6UIORRmtp?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
 </div>
 
-<div class="video-container">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XKEBqDusJu0?si=PhtYALDhzdp5CMW-?autoplay=1&mute=1" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
+<script>
+    var originalSources = [
+        "https://www.youtube.com/embed/cb12KmMMDJA?si=nDkX8N1BNCEl24NQ?autoplay=1&mute=1",
+        "https://www.youtube.com/embed/XKEBqDusJu0?si=PhtYALDhzdp5CMW-?autoplay=1&mute=1",
+        "https://www.youtube.com/embed/vfkUsBe_uBU?si=ZVCvJ8W6UIORRmtp?autoplay=1&mute=1"
+    ];
 
-<div class="video-container">
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/vfkUsBe_uBU?si=ZVCvJ8W6UIORRmtp?autoplay=1&mute=1" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
+    function switchContent(streamNumber) {
+        // Get the source of the right container
+        var rightContainerId = 'right-stream-container' + (streamNumber + 1);
+        var rightContainer = document.getElementById(rightContainerId);
+        var rightSource = rightContainer.querySelector('iframe').src;
+
+        // Get the source of the left (larger) container
+        var leftLargerContainer = document.getElementById('left-larger-video');
+        var leftSource = leftLargerContainer.querySelector('iframe').src;
+
+        // Swap the content between left and right containers
+        leftLargerContainer.querySelector('iframe').src = rightSource;
+        rightContainer.querySelector('iframe').src = leftSource;
+    }
+</script>
 
 </body>
 </html>
